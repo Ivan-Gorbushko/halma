@@ -11,7 +11,7 @@ const B = 1            // Black checker flag
 const W = 2            // White checker flag
 const F = 3            // Outboard flag
 const INFINITY = 30000 // Max value
-const MAX_PLY = 3      // Max deep
+const MAX_PLY = 2      // Max deep
 
 type TMove struct {
 	source int
@@ -101,7 +101,7 @@ func main() {
 	var arg Targ
 	var n int
 	memset.Memset([]byte(fmt.Sprintf("%v", arg)), 0)
-	printBoard()
+	printBoard(false)
 	search(&arg)
 
 	fmt.Println(arg)
@@ -127,7 +127,7 @@ func include(set *TSet, n int) {
 }
 
 func in(set TSet, n int) bool {
-	println(set.data[(n)>>3] & 1 << ((n-1) & 7))
+	//println(set.data[(n)>>3] & 1 << ((n-1) & 7))
 	return (set.data[(n)>>3] & ( 1 << ((n-1) & 7))) != 0
 }
 
@@ -168,7 +168,6 @@ func simpleMove(arg *Targ, index int) {
 }
 
 func Move(arg *Targ, index int) {
-
 	var n int
 	var tmp int
 	var move TMove
@@ -189,7 +188,6 @@ func Move(arg *Targ, index int) {
 		}
 		include(&arg.set, move.dest)
 		makeMove(move, index)
-		printBoard()
 		callSearch(arg, move)
 		Move(arg, index)
 		unMakeMove(move, index)
@@ -201,14 +199,20 @@ func callSearch(arg *Targ, move TMove) {
 	nextArg.ply = arg.ply + 1
 	nextArg.score = arg.score + (StTab[move.dest] - StTab[move.source])
 	search(&nextArg)
-	if (arg.ply == 0) {
+	//if (arg.ply == 0) {
 		//fmt.Println(nextArg)
-	}
+	//}
 	if nextArg.max > arg.max {
 		arg.max = nextArg.max
 		arg.bestMove.source = move.source
 		arg.bestMove.dest = move.dest
-		//fmt.Println("test")
+
+		if (nextArg.ply >= MAX_PLY) {
+			printBoard(true)
+			fmt.Println(nextArg)
+		} else {
+			//printBoard(false)
+		}
 	}
 }
 
@@ -236,7 +240,7 @@ func search(arg *Targ) {
 	}
 }
 
-func printBoard()  {
+func printBoard(finished bool)  {
 	table := tablewriter.NewWriter(os.Stdout)
 	var data [10][]int
 	var slice []int
@@ -252,7 +256,7 @@ func printBoard()  {
 	index := 0
 	for _, row := range data {
 		strRow := make([]string, len(row))
-		colors := []tablewriter.Colors{}
+		var colors []tablewriter.Colors
 		for i, v := range row {
 			switch v {
 				case B:
@@ -270,6 +274,31 @@ func printBoard()  {
 		}
 		table.Rich(strRow, colors)
 	}
+
+	var color tablewriter.Colors
+	if finished {
+		color = tablewriter.Colors{tablewriter.BgHiRedColor, tablewriter.Bold}
+		table.SetCaption(true, "========= FINISHED THE BOARD POS !!! =========")
+	} else {
+		color = tablewriter.Colors{tablewriter.Bold}
+	}
+
+	table.SetRowSeparator("=")
+	table.SetColumnSeparator("|")
+	table.SetCenterSeparator("|")
+
+	headerFooterColumns := make([]string, 10)
+	for i:=0; i<10; i++ {
+		headerFooterColumns[i] = "========="
+	}
+	table.SetFooter(headerFooterColumns)
+	table.SetHeader(headerFooterColumns)
+
+
+	table.SetHeaderColor(color, color, color, color, color, color, color, color, color, color)
+	table.SetFooterColor(color, color, color, color, color, color, color, color, color, color)
+
+
 
 	table.SetBorder(true)
 	table.Render()

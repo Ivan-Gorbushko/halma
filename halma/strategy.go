@@ -73,7 +73,6 @@ func (s *Strategy) callSearch(move Move, board *Board) {
 	nextStrategy.Search(board)
 
 	if nextStrategy.Max > s.Max {
-		//board.PrintBoard(false)
 		s.Max = nextStrategy.Max
 		s.BestMove.Indx = move.Indx
 		s.BestMove.Color = move.Color

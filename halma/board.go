@@ -54,12 +54,10 @@ func (b Board) PrintBoard(finished bool)  {
 			case B:
 				colors = append(colors, tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.Bold})
 			case F:
-				//colors = append(colors, tablewriter.Colors{tablewriter.FgHiCyanColor, tablewriter.Bold})
 				colors = append(colors, tablewriter.Colors{tablewriter.FgHiRedColor, tablewriter.Bold})
 			case W:
 				colors = append(colors, tablewriter.Colors{tablewriter.FgWhiteColor, tablewriter.Bold})
 			default:
-				//colors = append(colors, tablewriter.Colors{tablewriter.FgHiYellowColor, tablewriter.Bold})
 				colors = append(colors, tablewriter.Colors{tablewriter.FgHiGreenColor, tablewriter.Bold})
 			}
 			//strRow[i] = fmt.Sprintf("%d (%d)", index, b.GetCellValues(W)[index])
@@ -107,19 +105,6 @@ func (b Board) PrintBoard(finished bool)  {
 
 func (b *Board) Create() Board {
 
-	//b.Pos = [SIZE * SIZE]int{
-	//	F, F, F, F, F, F, F, F, F, F,
-	//	F, 0, 0, B, B, 0, 0, 0, 0, F,
-	//	F, B, B, B, B, 0, 0, 0, 0, F,
-	//	F, B, B, B, B, B, 0, 0, 0, F,
-	//	F, 0, 0, 0, 0, 0, 0, 0, 0, F,
-	//	F, 0, 0, 0, 0, B, 0, 0, 0, F,
-	//	F, 0, 0, 0, 0, W, W, W, W, F,
-	//	F, 0, 0, 0, 0, W, W, W, W, F,
-	//	F, 0, 0, 0, 0, W, W, W, W, F,
-	//	F, F, F, F, F, F, F, F, F, F,
-	//}
-
 	b.Pos = [SIZE * SIZE]int{
 		F, F, F, F, F, F, F, F, F, F,
 		F, B, B, B, B, 0, 0, 0, 0, F,
@@ -159,12 +144,6 @@ func (b *Board) Create() Board {
 		21, 22, 23, 24,
 		31, 32, 33, 34,
 	}
-
-	//b.BlackStartPos = [12]int{
-	//	35, 55, 13, 14,
-	//	21, 22, 23, 24,
-	//	31, 32, 33, 34,
-	//}
 
 	b.BlackStartPos = [12]int{
 		11, 12, 13, 14,
